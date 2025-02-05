@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class MainModel {
     public static Stage getMainStage() {
         return mainStage;
     }
-
+    public static List<File> fileList = new ArrayList<>();
     public static void setMainStage(Stage mainStage) {
         MainModel.mainStage = mainStage;
     }

@@ -15,8 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -45,7 +44,7 @@ public class Main implements Initializable {
 
     @FXML
     void openFile(ActionEvent event) {
-
+        
     }
 
     @FXML
@@ -84,7 +83,20 @@ public class Main implements Initializable {
 
     @FXML
     void openSave(ActionEvent event) {
-
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory( new File(System.getProperty("user.home")) );
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.txt"));
+        File file = fc.showSaveDialog(batchList.getScene().getWindow());
+        if (file!=null && file.exists()) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (int i = 0; i < MainModel.fileList.size(); i++) {
+                    File f = MainModel.fileList.get(i);
+                    writer.write(f.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                System.err.println("Error abriendo el archivo: "+e.getMessage());
+            }
+        }
     }
 
     @FXML
@@ -96,12 +108,8 @@ public class Main implements Initializable {
         FXMLLoader loader = new FXMLLoader( getClass().getResource("/FXML/menu_item.fxml") );
         try {
             Parent root = loader.load();
-
-
-            //batchList.getChildren().add(root);
             MainModel.addItem(root);
-
-
+            MainModel.fileList.add(file);
             com.dam.controller.MenuItem controller = (com.dam.controller.MenuItem) loader.getController();
             controller.setup(file);
             controller.setParentItem(root);

@@ -38,6 +38,7 @@ public class MenuItem {
     @FXML
     void onDelete() {
         Main.deleteBatch(this.file, this.btnDelete);
+        MainModel.fileList.remove(file);
     }
 
 
@@ -54,6 +55,8 @@ public class MenuItem {
 
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
             System.out.println("Elemento eliminado");
+
+            MainModel.fileList.remove(file);
             MainModel.removeItem(parentItem);
         }
 
