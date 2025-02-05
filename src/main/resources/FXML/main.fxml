@@ -58,7 +58,7 @@
          <children>
             <ScrollPane prefHeight="375.0" prefWidth="640.0">
                <content>
-                  <VBox prefHeight="370.0" prefWidth="624.0" />
+                  <VBox fx:id="batchList" prefWidth="624.0" />
                </content>
             </ScrollPane>
          </children>

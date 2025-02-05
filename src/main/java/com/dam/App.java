@@ -1,5 +1,6 @@
 package com.dam;
 
+import com.dam.model.MainModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,5 +19,6 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("test");
         primaryStage.show();
+        MainModel.setMainStage(primaryStage);
     }
 }
