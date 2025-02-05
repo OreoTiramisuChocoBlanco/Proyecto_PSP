@@ -1,6 +1,8 @@
 package com.dam;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -10,10 +12,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        VBox vbox = new VBox(new Label("Hola mundo!"));
-        Scene scene = new Scene(vbox);
+        FXMLLoader loader = new FXMLLoader( getClass().getResource("/FXML/main.fxml") );
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Primera app");
+        primaryStage.setTitle("test");
         primaryStage.show();
     }
 }
