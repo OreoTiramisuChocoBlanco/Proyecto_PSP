@@ -37,7 +37,7 @@ public class MenuItem {
 
     @FXML
     void onDelete() {
-
+        Main.deleteBatch(this.file, this.btnDelete);
     }
 
 

@@ -6,9 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -16,6 +18,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Main implements Initializable {
@@ -42,6 +45,11 @@ public class Main implements Initializable {
 
     @FXML
     void openFile(ActionEvent event) {
+
+    }
+
+    @FXML
+    void openImport(ActionEvent event) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Abrir");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivo .bat", "*.bat"));
@@ -55,13 +63,23 @@ public class Main implements Initializable {
     }
 
     @FXML
-    void openImport(ActionEvent event) {
-
-    }
-
-    @FXML
     void openNew(ActionEvent event) {
-
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory( new File(System.getProperty("user.home")) );
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivo .bat", "*.bat"));
+        File file = fc.showSaveDialog(batchList.getScene().getWindow());
+        if (file != null) {
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                    ProcessBuilder pb = new ProcessBuilder("notepad.exe", file.getAbsolutePath());
+                    pb.start();
+                    addBatch(file);
+                } catch (IOException e) {
+                    System.err.println("ERROR: Error al crear el archivo: "+e.getMessage());
+                }
+            }
+        }
     }
 
     @FXML
@@ -97,24 +115,24 @@ public class Main implements Initializable {
 
     }
 
-    void removeBatch(Parent item) {
+    static void removeBatch(Parent item) {
         MainModel.removeItem(item);
         System.out.println("Elemento eliminado de batchList y batchItems.");
     }
 
-    void deleteBatch(File file, Button btnDelete){
+    public static void deleteBatch(File file, Button btnDelete){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmar eliminación");
         alert.setHeaderText("¿Seguro que deseas eliminar este archivo?");
         alert.setContentText(file.getAbsolutePath());
 
- /*       Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             if (file.delete()) {
 
                 Node node = btnDelete.getParent();
                 if (node != null) {
-                    batchList.getChildren().remove(node.getParent());
+                    removeBatch(node.getParent());
                 }
 
             } else {
@@ -128,7 +146,7 @@ public class Main implements Initializable {
             alert1.setTitle("Error");
             alert1.setHeaderText("Ha ocurrido un error");
             alert1.show();
-        }*/
+        }
     }
 
     @Override
