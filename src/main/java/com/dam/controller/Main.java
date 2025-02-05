@@ -44,7 +44,28 @@ public class Main implements Initializable {
 
     @FXML
     void openFile(ActionEvent event) {
-        
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Abrir");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivo .txt", "*.txt"));
+        fc.setInitialDirectory( new File( System.getProperty("user.home") ) );
+
+        File file = fc.showOpenDialog( MainModel.getMainStage() );
+        if (file != null && file.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line = br.readLine();
+                while (line != null) {
+                    File f = new File(line);
+                    if (f.exists()) {
+                        addBatch(f);
+                    }
+                    line = br.readLine();
+                }
+                br.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @FXML
@@ -87,11 +108,12 @@ public class Main implements Initializable {
         fc.setInitialDirectory( new File(System.getProperty("user.home")) );
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT", "*.txt"));
         File file = fc.showSaveDialog(batchList.getScene().getWindow());
-        if (file!=null && file.exists()) {
+        if (file!=null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                 for (int i = 0; i < MainModel.fileList.size(); i++) {
                     File f = MainModel.fileList.get(i);
-                    writer.write(f.getAbsolutePath());
+                    System.out.println(f.getAbsolutePath());
+                    writer.write(f.getAbsolutePath()+"\n");
                 }
             } catch (IOException e) {
                 System.err.println("Error abriendo el archivo: "+e.getMessage());
