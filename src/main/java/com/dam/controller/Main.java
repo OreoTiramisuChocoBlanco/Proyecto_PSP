@@ -1,26 +1,24 @@
 package com.dam.controller;
 
-import com.dam.model.BatchCommand;
 import com.dam.model.MainModel;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class Main {
+public class Main implements Initializable {
 
     @FXML
     private VBox batchList;
@@ -40,7 +38,7 @@ public class Main {
     @FXML
     private MenuItem btnSave;
 
-    private List<VBox> batchItems = new ArrayList<>();
+
 
     @FXML
     void openFile(ActionEvent event) {
@@ -80,9 +78,15 @@ public class Main {
         FXMLLoader loader = new FXMLLoader( getClass().getResource("/FXML/menu_item.fxml") );
         try {
             Parent root = loader.load();
-            batchList.getChildren().add(root);
+
+
+            //batchList.getChildren().add(root);
+            MainModel.addItem(root);
+
+
             com.dam.controller.MenuItem controller = (com.dam.controller.MenuItem) loader.getController();
             controller.setup(file);
+            controller.setParentItem(root);
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
@@ -93,9 +97,8 @@ public class Main {
 
     }
 
-    public void removeBatch(VBox vbox) {
-        batchList.getChildren().remove(vbox);
-        batchItems.remove(vbox);
+    void removeBatch(Parent item) {
+        MainModel.removeItem(item);
         System.out.println("Elemento eliminado de batchList y batchItems.");
     }
 
@@ -105,7 +108,7 @@ public class Main {
         alert.setHeaderText("¿Seguro que deseas eliminar este archivo?");
         alert.setContentText(file.getAbsolutePath());
 
-        Optional<ButtonType> result = alert.showAndWait();
+ /*       Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             if (file.delete()) {
 
@@ -125,10 +128,8 @@ public class Main {
             alert1.setTitle("Error");
             alert1.setHeaderText("Ha ocurrido un error");
             alert1.show();
-        }
+        }*/
     }
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

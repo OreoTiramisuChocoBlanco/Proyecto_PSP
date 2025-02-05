@@ -1,5 +1,6 @@
 package com.dam;
 
+import com.dam.controller.Main;
 import com.dam.model.MainModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("test");
         primaryStage.show();
+        Main controlador = loader.getController();
         MainModel.setMainStage(primaryStage);
     }
 }
