@@ -3,17 +3,21 @@ package com.dam.controller;
 import com.dam.model.BatchCommand;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
+import java.util.Optional;
 
 public class MenuItem {
 
     private File file;
 
     @FXML
-    private Button btnDelete;
+    public Button btnDelete;
 
     @FXML
     private Button btnRemove;
@@ -28,12 +32,28 @@ public class MenuItem {
     private Label labelTitle;
 
     @FXML
-    void onDelete(ActionEvent event) {
-
+    void onDelete() {
+        Main hola = new Main();
+        hola.deleteBatch(file,btnDelete);
     }
 
+
+
     @FXML
-    void onRemove(ActionEvent event) {
+    void onRemove() {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmación");
+        alerta.setHeaderText("Eliminar elemento");
+        alerta.setContentText("¿Estás seguro de que quieres eliminar este elemento?");
+
+        Optional<ButtonType> resultado = alerta.showAndWait();
+
+
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            System.out.println("Elemento eliminado");
+            
+        }
+
 
     }
 
@@ -49,6 +69,7 @@ public class MenuItem {
         labelTitle.setText(file.getName());
         labelDescription.setText(file.getAbsolutePath());
         this.file = file;
-    }
 
+
+    }
 }

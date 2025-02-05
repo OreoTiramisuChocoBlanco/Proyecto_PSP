@@ -5,14 +5,20 @@ import com.dam.model.MainModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -33,6 +39,8 @@ public class Main {
 
     @FXML
     private MenuItem btnSave;
+
+    private List<VBox> batchItems = new ArrayList<>();
 
     @FXML
     void openFile(ActionEvent event) {
@@ -84,5 +92,41 @@ public class Main {
         }
 
     }
+
+    public void removeBatch(VBox vbox) {
+        batchList.getChildren().remove(vbox);
+        batchItems.remove(vbox);
+        System.out.println("Elemento eliminado de batchList y batchItems.");
+    }
+
+    void deleteBatch(File file, Button btnDelete){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar eliminación");
+        alert.setHeaderText("¿Seguro que deseas eliminar este archivo?");
+        alert.setContentText(file.getAbsolutePath());
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (file.delete()) {
+
+                Node node = btnDelete.getParent();
+                if (node != null) {
+                    batchList.getChildren().remove(node.getParent());
+                }
+            } else {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("Ha ocurrido un error");
+                alert2.show();
+            }
+        } else {
+            Alert alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setTitle("Error");
+            alert1.setHeaderText("Ha ocurrido un error");
+            alert1.show();
+        }
+    }
+
+
 
 }
