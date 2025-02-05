@@ -1,5 +1,6 @@
 package com.dam.controller;
 
+import com.dam.model.MainModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -43,7 +44,7 @@ public class Main {
 
     @FXML
     void quit(ActionEvent event) {
-
+        MainModel.closeApp();
     }
 
 }
