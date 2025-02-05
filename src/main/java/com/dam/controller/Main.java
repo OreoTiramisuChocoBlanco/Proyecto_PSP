@@ -113,6 +113,7 @@ public class Main {
                 if (node != null) {
                     batchList.getChildren().remove(node.getParent());
                 }
+
             } else {
                 Alert alert2 = new Alert(Alert.AlertType.ERROR);
                 alert2.setTitle("Error");
@@ -129,4 +130,10 @@ public class Main {
 
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        MainModel.getBatchList().addListener((ListChangeListener<? super Parent>) (change) ->{
+            batchList.getChildren().setAll(MainModel.getBatchList());
+        });
+    }
 }
