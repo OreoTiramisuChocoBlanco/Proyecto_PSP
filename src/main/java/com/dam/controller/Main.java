@@ -44,11 +44,15 @@ public class Main implements Initializable {
 
     @FXML
     void openFile(ActionEvent event) {
+
+        //Abre File Chooser
         FileChooser fc = new FileChooser();
         fc.setTitle("Abrir");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivo .txt", "*.txt"));
         fc.setInitialDirectory( new File( System.getProperty("user.home") ) );
 
+
+        // Lee el aarchivo y pone los .bat que tiene en el txt
         File file = fc.showOpenDialog( MainModel.getMainStage() );
         if (file != null && file.exists()) {
             try {
@@ -70,6 +74,9 @@ public class Main implements Initializable {
 
     @FXML
     void openImport(ActionEvent event) {
+
+        //Abre el file chooser y te carga el .but
+
         FileChooser fc = new FileChooser();
         fc.setTitle("Abrir");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivo .bat", "*.bat"));
